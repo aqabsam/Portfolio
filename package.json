@@ -1,6 +1,6 @@
 {
   "name": "PortFolio of Aqab",
-  "homepage": "https://aqabsam.github.io/Portfolio",
+  "homepage": "https://github.com/aqabsam/Portfolio.git",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,9 +11,9 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-
   },
   "dependencies": {
+    "firebase": "^11.10.0",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",

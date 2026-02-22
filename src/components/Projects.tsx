@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,6 +13,8 @@ import {
   Heart,
   CheckCircle,
 } from "lucide-react";
+import { WebProject, WebProjectIcon } from "../data/webProjects";
+import { getWebProjects, subscribeToWebProjects } from "../utils/webProjectsStorage";
 
 const Projects: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -225,24 +227,24 @@ cv2.destroyAllWindows()
   return (
     <>
       {/* Your Projects section (unchanged) */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <section className="py-20 bg-transparent">
         <div className="container mx-auto px-4">
           {/* Heading */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">
               Python{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
                 Projects Showcase
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
               Explore my Python projects with offline demo videos and descriptions.
             </p>
           </div>
 
           {/* Project Box */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10 relative overflow-hidden">
+            <div className="bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-6 md:p-10 relative overflow-hidden">
               {/* Video Player */}
               <video
                 src={projects[currentIndex].video}
@@ -252,30 +254,30 @@ cv2.destroyAllWindows()
 
               {/* Info */}
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {projects[currentIndex].title}
-                </h3>
-                <p className="text-blue-600 font-medium mb-4">
-                  {projects[currentIndex].tag}
-                </p>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  {projects[currentIndex].description}
-                </p>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                    {projects[currentIndex].title}
+                  </h3>
+                  <p className="text-cyan-600 dark:text-cyan-400 font-medium mb-4">
+                    {projects[currentIndex].tag}
+                  </p>
+                  <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+                    {projects[currentIndex].description}
+                  </p>
 
                 {/* Buttons */}
                 <div className="flex justify-between items-center mt-6">
                   <button
                     onClick={prevProject}
-                    className="w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors duration-200"
+                    className="w-12 h-12 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full flex items-center justify-center transition-colors duration-200"
                     aria-label="Previous project"
                   >
-                    <ChevronLeft className="w-6 h-6 text-gray-600" />
+                    <ChevronLeft className="w-6 h-6 text-slate-600 dark:text-slate-300" />
                   </button>
 
                   {!showCode && (
                     <button
                       onClick={handleOpenModal}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white rounded-lg font-semibold transition-all duration-200"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all duration-200"
                     >
                       <Code className="w-5 h-5" />
                       View Source
@@ -284,7 +286,7 @@ cv2.destroyAllWindows()
 
                   <button
                     onClick={nextProject}
-                    className="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors duration-200"
+                    className="w-12 h-12 bg-cyan-600 hover:bg-cyan-700 rounded-full flex items-center justify-center transition-colors duration-200"
                     aria-label="Next project"
                   >
                     <ChevronRight className="w-6 h-6 text-white" />
@@ -294,12 +296,12 @@ cv2.destroyAllWindows()
                 {/* Code + Download */}
                 {showCode && (
                   <div className="mt-6">
-                    <pre className="bg-gray-900 text-white p-6 rounded-xl overflow-x-auto">
+                    <pre className="bg-slate-900 text-white p-6 rounded-xl overflow-x-auto">
                       <code>{projects[currentIndex].code}</code>
                     </pre>
                     <button
                       onClick={handleDownload}
-                      className="mt-4 flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white rounded-lg font-semibold transition-all duration-200"
+                      className="mt-4 flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-lg font-semibold transition-all duration-200"
                     >
                       <Download className="w-5 h-5" />
                       Download Code
@@ -317,8 +319,8 @@ cv2.destroyAllWindows()
                   onClick={() => setCurrentIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-200 ${
                     index === currentIndex
-                      ? "bg-blue-600 w-8"
-                      : "bg-gray-300 hover:bg-gray-400"
+                      ? "bg-cyan-600 w-8"
+                      : "bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600"
                   }`}
                 />
               ))}
@@ -328,15 +330,15 @@ cv2.destroyAllWindows()
 
         {/* Password Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md relative">
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl p-8 w-full max-w-md relative">
               <button
                 onClick={handleCloseModal}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                className="absolute top-4 right-4 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
               >
                 <X className="w-6 h-6" />
               </button>
-              <h3 className="text-2xl font-bold mb-4 text-gray-900 text-center">
+              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100 text-center">
                 Enter Password
               </h3>
               <form onSubmit={handleSubmitPassword} className="flex flex-col gap-4">
@@ -345,12 +347,12 @@ cv2.destroyAllWindows()
                   placeholder="Enter password"
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+                  className="border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition"
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition"
+                  className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 rounded-lg transition"
                 >
                   Submit
                 </button>
@@ -367,79 +369,45 @@ cv2.destroyAllWindows()
 };
 
 const WebProjects: React.FC = () => {
-  const projects = [
-    {
-      icon: MapPin,
-      title: "Lost & Found",
-      description: "Report and track lost and found items with real-time updates.",
-      gradient: "from-blue-100 to-blue-200",
-      iconGradient: "from-blue-600 to-blue-700",
-      link: "https://aqabsam.github.io/LOST-AND-FOUND/",
-    },
-    {
-      icon: Cloud,
-      title: "Weather App",
-      description: "Get live weather updates and forecasts using API integration.",
-      gradient: "from-green-100 to-green-200",
-      iconGradient: "from-green-600 to-green-700",
-      link: "https://aqabsam.github.io/PRODIGY_WD_05/",
-    },
-    {
-      icon: Gamepad,
-      title: "Tic Tac Toe",
-      description: "Interactive Tic Tac Toe game built with JavaScript and React.",
-      gradient: "from-purple-100 to-purple-200",
-      iconGradient: "from-purple-600 to-purple-700",
-      link: "https://aqabsam.github.io/PRODIGY_WD_03/",
-    },
-    {
-      icon: Clock,
-      title: "Stopwatch",
-      description: "A fully functional stopwatch with start, stop, reset, and lap features.",
-      gradient: "from-orange-100 to-orange-200",
-      iconGradient: "from-orange-600 to-orange-700",
-      link: "https://aqabsam.github.io/PRODIGY_WD_02/",
-    },
-    {
-      icon: Users,
-      title: "Nice",
-      description: "An interactive platform to connect students with startup initiatives.",
-      gradient: "from-teal-100 to-teal-200",
-      iconGradient: "from-teal-600 to-teal-700",
-      link: "https://yourdomain.com/nice",
-    },
-    {
-      icon: Heart,
-      title: "Helping Hand for Bezubaan",
-      description: "Web app supporting charitable initiatives for the mute community.",
-      gradient: "from-red-100 to-red-200",
-      iconGradient: "from-red-600 to-red-700",
-      link: "https://aqabsam.github.io/HELPING_HAND_FOR_BEZUBAAN/",
-    },
-  ];
+  const [projects, setProjects] = useState<WebProject[]>([]);
+
+  const iconMap: Record<WebProjectIcon, React.ComponentType<{ className?: string }>> = {
+    "map-pin": MapPin,
+    cloud: Cloud,
+    gamepad: Gamepad,
+    clock: Clock,
+    users: Users,
+    heart: Heart,
+  };
+
+  useEffect(() => {
+    setProjects(getWebProjects());
+    const unsubscribe = subscribeToWebProjects(setProjects);
+    return unsubscribe;
+  }, []);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">
             My{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
               Web Development Projects
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
             Explore my hands-on web development projects, showcasing interactive UI, API integrations, and real-world functionality.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => {
-            const Icon = project.icon;
+            const Icon = iconMap[project.icon] ?? MapPin;
             return (
               <div
                 key={index}
-                className={`group rounded-xl border border-gray-100 overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl bg-white hover:bg-gradient-to-br ${project.gradient}`}
+                className={`group rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl bg-white/85 dark:bg-slate-900/70 hover:bg-gradient-to-br ${project.gradient}`}
               >
                 <div className="p-8 flex flex-col justify-between h-full">
                   <div>
@@ -449,11 +417,11 @@ const WebProjects: React.FC = () => {
                       <Icon className="w-8 h-8 text-white" />
                     </div>
 
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 transition-colors duration-300">
                       {project.title}
                     </h3>
 
-                    <p className="text-gray-600 leading-relaxed mb-4 transition-colors duration-300">
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 transition-colors duration-300">
                       {project.description}
                     </p>
                   </div>
@@ -475,7 +443,7 @@ const WebProjects: React.FC = () => {
         <div className="text-center mt-12">
           <div className="inline-flex items-center bg-blue-50 rounded-full px-6 py-3">
             <CheckCircle className="w-5 h-5 text-blue-600 mr-2" />
-            <span className="text-blue-700 font-medium">
+            <span className="text-blue-700 dark:text-blue-300 font-medium">
               All projects are live with working demos
             </span>
           </div>

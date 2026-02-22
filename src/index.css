@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --app-bg: #f8fafc;
+    --app-text: #0f172a;
+    --accent-a: rgba(56, 189, 248, 0.08);
+    --accent-b: rgba(59, 130, 246, 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply transition-colors duration-300;
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    background-image:
+      radial-gradient(circle at 10% 20%, var(--accent-a), transparent 30%),
+      radial-gradient(circle at 90% 10%, var(--accent-b), transparent 35%);
+  }
+}

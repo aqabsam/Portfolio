@@ -29,7 +29,7 @@ const introQuestions = [
 ];
 
 const defaultAnswers = [
-  "Aqab Sami",
+  "Mohd Aqab Sami",
   "B.Tech",
   "Computer Science & Engineering",
   "3rd Year",
@@ -123,23 +123,23 @@ const ChatBotModal: React.FC<ChatBotModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md h-[600px] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-md h-[80vh] max-h-[640px] flex flex-col overflow-hidden">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-600 to-green-700 text-white">
+        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
           <div className="flex items-center">
-            <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
               <Bot className="w-6 h-6" />
             </div>
             <div>
               <h3 className="font-semibold">Aqab Buddy</h3>
-              <p className="text-xs text-green-100">Intro Interview Mode</p>
+              <p className="text-xs text-cyan-100">Intro Interview Mode</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-colors duration-200"
+            className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors duration-200"
           >
             <X className="w-5 h-5" />
           </button>
@@ -164,12 +164,12 @@ const ChatBotModal: React.FC<ChatBotModalProps> = ({ isOpen, onClose }) => {
                 </div>
                 <div className={`px-4 py-2 rounded-2xl whitespace-pre-line ${
                   message.sender === 'user'
-                    ? 'bg-blue-600 text-white rounded-br-md'
-                    : 'bg-gray-100 text-gray-800 rounded-bl-md'
+                    ? 'bg-cyan-600 text-white rounded-br-md'
+                    : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-100 rounded-bl-md'
                 }`}>
                   <p className="text-sm">{message.text}</p>
                   <p className={`text-xs mt-1 ${
-                    message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                    message.sender === 'user' ? 'text-cyan-100' : 'text-slate-500 dark:text-slate-400'
                   }`}>
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -182,10 +182,10 @@ const ChatBotModal: React.FC<ChatBotModalProps> = ({ isOpen, onClose }) => {
 
         {/* Input */}
         {step <= introQuestions.length && (
-          <div className="p-4 border-t flex items-center">
+          <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center">
             <input
               type="text"
-              className="flex-1 border rounded-full px-4 py-2 text-sm mr-2"
+              className="flex-1 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-full px-4 py-2 text-sm mr-2"
               placeholder={step < introQuestions.length ? `Example: ${defaultAnswers[step]}` : "Type here..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -193,7 +193,7 @@ const ChatBotModal: React.FC<ChatBotModalProps> = ({ isOpen, onClose }) => {
             />
             <button
               onClick={handleSend}
-              className="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700"
+              className="bg-cyan-600 text-white px-4 py-2 rounded-full hover:bg-cyan-700"
             >
               Send
             </button>

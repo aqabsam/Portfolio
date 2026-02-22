@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Menu, User, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { getResumeLink, subscribeToResume } from "../utils/resumeStorage";
+import { getProfilePhotoLink, subscribeToProfilePhoto } from "../utils/profilePhotoStorage";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [resumeLink, setResumeLink] = useState("/resume.pdf");
+  const [profilePhotoLink, setProfilePhotoLink] = useState("");
 
   const navItems = [
     { id: "home", label: "Home", path: "/" },
@@ -29,6 +31,12 @@ const Navbar: React.FC = () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    setProfilePhotoLink(getProfilePhotoLink());
+    const unsubscribe = subscribeToProfilePhoto(setProfilePhotoLink);
+    return unsubscribe;
+  }, []);
+
   const baseLink = "relative px-3 py-2 text-sm font-medium transition-colors duration-200";
 
   return (
@@ -42,8 +50,12 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
-              <User className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30 overflow-hidden">
+              {profilePhotoLink ? (
+                <img src={profilePhotoLink} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-6 h-6 text-white" />
+              )}
             </div>
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Mohd Aqab Sami</h1>

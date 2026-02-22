@@ -2,13 +2,21 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import profileImg from "../assets/ProfileImg.jpeg";
 import { getResumeLink, subscribeToResume } from "../utils/resumeStorage";
+import { getProfilePhotoLink, subscribeToProfilePhoto } from "../utils/profilePhotoStorage";
 
 const Home: React.FC = () => {
   const [resumeLink, setResumeLink] = useState("/resume.pdf");
+  const [profilePhotoLink, setProfilePhotoLink] = useState("");
 
   useEffect(() => {
     setResumeLink(getResumeLink());
     const unsubscribe = subscribeToResume(setResumeLink);
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    setProfilePhotoLink(getProfilePhotoLink());
+    const unsubscribe = subscribeToProfilePhoto(setProfilePhotoLink);
     return unsubscribe;
   }, []);
 
@@ -46,7 +54,7 @@ const Home: React.FC = () => {
               whileHover={{ scale: 1.05 }}
             >
               <img
-                src={profileImg}
+                src={profilePhotoLink || profileImg}
                 alt="Profile"
                 className="rounded-full shadow-2xl shadow-cyan-500/30 w-80 h-80 object-cover border-4 border-cyan-500"
               />

@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FileText, Lock, LogOut, Pencil, PlusCircle, Save, Trash2, Upload } from "lucide-react";
+import { FileText, Lock, LogOut, Pencil, PlusCircle, Save, Trash2, Upload, User } from "lucide-react";
 import { Certificate } from "../data/certificates";
 import { Skill } from "../data/skills";
 import { WebProject, WebProjectIcon } from "../data/webProjects";
 import { getCertificates, saveCertificates, subscribeToCertificates } from "../utils/certificatesStorage";
 import { getResumeLink, saveResumeLink, subscribeToResume } from "../utils/resumeStorage";
+import { getProfilePhotoLink, saveProfilePhotoLink, subscribeToProfilePhoto } from "../utils/profilePhotoStorage";
 import { getSkills, saveSkills, subscribeToSkills } from "../utils/skillsStorage";
 import { getWebProjects, saveWebProjects, subscribeToWebProjects } from "../utils/webProjectsStorage";
 
@@ -78,6 +79,8 @@ const AdminPanel: React.FC = () => {
 
   const [resumeLink, setResumeLink] = useState("/resume.pdf");
   const [resumeStatus, setResumeStatus] = useState("");
+  const [profilePhotoLink, setProfilePhotoLink] = useState("");
+  const [profilePhotoStatus, setProfilePhotoStatus] = useState("");
 
   useEffect(() => {
     setIsAuthenticated(sessionStorage.getItem(ADMIN_SESSION_KEY) === "true");
@@ -85,17 +88,20 @@ const AdminPanel: React.FC = () => {
     setSkills(getSkills());
     setWebProjects(getWebProjects());
     setResumeLink(getResumeLink());
+    setProfilePhotoLink(getProfilePhotoLink());
 
     const unsubscribeCertificates = subscribeToCertificates(setCertificates);
     const unsubscribeSkills = subscribeToSkills(setSkills);
     const unsubscribeProjects = subscribeToWebProjects(setWebProjects);
     const unsubscribeResume = subscribeToResume(setResumeLink);
+    const unsubscribeProfilePhoto = subscribeToProfilePhoto(setProfilePhotoLink);
 
     return () => {
       unsubscribeCertificates();
       unsubscribeSkills();
       unsubscribeProjects();
       unsubscribeResume();
+      unsubscribeProfilePhoto();
     };
   }, []);
 
@@ -236,6 +242,22 @@ const AdminPanel: React.FC = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleProfilePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === "string") {
+        setProfilePhotoLink(result);
+        saveProfilePhotoLink(result);
+        setProfilePhotoStatus("New profile photo uploaded successfully. It is now global for all users.");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   if (!isAuthenticated) {
     return (
       <section className="py-24 bg-transparent min-h-screen">
@@ -326,6 +348,30 @@ const AdminPanel: React.FC = () => {
             </a>
 
             {resumeStatus && <p className="text-sm text-green-600 font-medium">{resumeStatus}</p>}
+          </div>
+
+          <div className="bg-white/85 dark:bg-slate-900/75 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg p-6 md:p-8 space-y-4 lg:col-span-2">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <User className="w-5 h-5 text-cyan-600" />
+              Update Profile Photo
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-300">Upload a new profile image. It will update across all pages for all users.</p>
+
+            <div className="w-24 h-24 rounded-full border border-slate-200 overflow-hidden bg-slate-100 flex items-center justify-center">
+              {profilePhotoLink ? (
+                <img src={profilePhotoLink} alt="Current profile" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-8 h-8 text-slate-500" />
+              )}
+            </div>
+
+            <label className="block border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg px-4 py-5 text-center cursor-pointer hover:border-cyan-500 transition-colors duration-200">
+              <Upload className="w-5 h-5 mx-auto mb-2 text-slate-500 dark:text-slate-300" />
+              <span className="text-sm text-slate-600 dark:text-slate-300">Upload New Profile Photo (JPG/PNG)</span>
+              <input type="file" accept="image/*" className="hidden" onChange={handleProfilePhotoUpload} />
+            </label>
+
+            {profilePhotoStatus && <p className="text-sm text-green-600 font-medium">{profilePhotoStatus}</p>}
           </div>
 
           <form onSubmit={handleSkillSubmit} className="bg-white/85 dark:bg-slate-900/75 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg p-6 md:p-8 space-y-4">

@@ -1,6 +1,6 @@
 {
   "name": "PortFolio of Aqab",
-  "homepage": "https://github.com/aqabsam/Portfolio.git",
+  "homepage": "https://aqabsam.github.io/Portfolio/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "firebase": "^11.10.0",

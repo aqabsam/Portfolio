@@ -188,6 +188,90 @@ cap.release()
 cv2.destroyAllWindows()
 `,
     },
+    {
+      title: "Virtual Keyboard",
+      tag: "Python + OpenCV + MediaPipe",
+      description: "A hand-tracking virtual keyboard that lets users type through finger gestures in real time.",
+      video: "/videos/KEYBOARD.mov",
+      password: "physics123@",
+      code: `# Python Virtual Keyboard
+import cv2
+import mediapipe as mp
+import pyautogui
+import math
+
+cap = cv2.VideoCapture(0)
+mp_hands = mp.solutions.hands
+hands = mp_hands.Hands(max_num_hands=1)
+mp_draw = mp.solutions.drawing_utils
+
+keys = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M', 'SPACE']
+]
+
+key_w, key_h = 60, 60
+start_x, start_y = 40, 120
+
+def draw_keyboard(img):
+    positions = []
+    for row_idx, row in enumerate(keys):
+        for col_idx, key in enumerate(row):
+            x = start_x + col_idx * (key_w + 10)
+            y = start_y + row_idx * (key_h + 10)
+            w = 120 if key == 'SPACE' else key_w
+            cv2.rectangle(img, (x, y), (x + w, y + key_h), (50, 50, 50), -1)
+            cv2.rectangle(img, (x, y), (x + w, y + key_h), (255, 255, 255), 2)
+            cv2.putText(img, key, (x + 10, y + 38), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+            positions.append((key, x, y, w, key_h))
+    return positions
+
+pressed_key = None
+
+while True:
+    success, frame = cap.read()
+    if not success:
+        break
+
+    frame = cv2.flip(frame, 1)
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    result = hands.process(rgb)
+    key_positions = draw_keyboard(frame)
+
+    if result.multi_hand_landmarks:
+        for hand_landmarks in result.multi_hand_landmarks:
+            mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+            h, w, _ = frame.shape
+            index_tip = hand_landmarks.landmark[8]
+            thumb_tip = hand_landmarks.landmark[4]
+            ix, iy = int(index_tip.x * w), int(index_tip.y * h)
+            tx, ty = int(thumb_tip.x * w), int(thumb_tip.y * h)
+
+            cv2.circle(frame, (ix, iy), 10, (0, 255, 255), -1)
+            distance = math.hypot(ix - tx, iy - ty)
+
+            hovered = None
+            for key, x, y, kw, kh in key_positions:
+                if x < ix < x + kw and y < iy < y + kh:
+                    hovered = key
+                    cv2.rectangle(frame, (x, y), (x + kw, y + kh), (0, 255, 0), 3)
+                    if distance < 35 and pressed_key != key:
+                        pyautogui.write(' ' if key == 'SPACE' else key.lower())
+                        pressed_key = key
+                    break
+
+            if hovered is None or distance >= 35:
+                pressed_key = None
+
+    cv2.imshow("Virtual Keyboard", frame)
+    if cv2.waitKey(1) & 0xFF == 27:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+`,
+    },
   ];
 
   const nextProject = () => setCurrentIndex((prev) => (prev + 1) % projects.length);

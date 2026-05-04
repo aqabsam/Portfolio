@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +10,8 @@
     --app-text: #0f172a;
     --accent-a: rgba(56, 189, 248, 0.08);
     --accent-b: rgba(59, 130, 246, 0.08);
+    --font-body: "Manrope", sans-serif;
+    --font-display: "Sora", sans-serif;
   }
 
   html {
@@ -16,10 +20,35 @@
 
   body {
     @apply transition-colors duration-300;
+    font-family: var(--font-body);
     background-color: var(--app-bg);
     color: var(--app-text);
     background-image:
       radial-gradient(circle at 10% 20%, var(--accent-a), transparent 30%),
       radial-gradient(circle at 90% 10%, var(--accent-b), transparent 35%);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  p,
+  li,
+  a,
+  button,
+  input,
+  textarea,
+  label {
+    letter-spacing: -0.01em;
   }
 }

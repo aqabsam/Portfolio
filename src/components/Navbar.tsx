@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
             <a
               href={resumeLink}
               download
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg shadow-cyan-600/30"
+              className="inline-flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl text-sm lg:text-base font-semibold hover:from-cyan-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg shadow-cyan-600/30"
             >
               Download Resume
             </a>
@@ -134,7 +134,7 @@ const Navbar: React.FC = () => {
               <a
                 href={resumeLink}
                 download
-                className="w-full block text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:from-cyan-600 hover:to-blue-700 transition-all duration-200"
+                className="w-full block text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-5 py-3 rounded-xl font-semibold text-sm hover:from-cyan-600 hover:to-blue-700 transition-all duration-200"
               >
                 Download Resume
               </a>

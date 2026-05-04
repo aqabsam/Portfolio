@@ -43,7 +43,7 @@ const Certifications: React.FC = () => {
             My <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">Certifications</span>
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Managed from admin and synced globally with Firebase in real time.
+            A collection of my certification PDFs in programming, machine learning, and technical training.
           </p>
         </div>
 
@@ -86,7 +86,7 @@ const Certifications: React.FC = () => {
         <div className="text-center mt-12">
           <div className="inline-flex items-center bg-blue-50 rounded-full px-6 py-3">
             <CheckCircle className="w-5 h-5 text-blue-600 mr-2" />
-            <span className="text-blue-700 dark:text-blue-300 font-medium">Certificates update instantly after admin changes</span>
+            <span className="text-blue-700 dark:text-blue-300 font-medium">All certificate cards link directly to downloadable PDFs</span>
           </div>
         </div>
       </div>

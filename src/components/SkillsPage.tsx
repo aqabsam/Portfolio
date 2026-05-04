@@ -1,10 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Brain } from "lucide-react";
+import { SiBootstrap, SiJavascript, SiReact, SiTailwindcss } from "react-icons/si";
 import { Skill } from "../data/skills";
 import { getSkills, subscribeToSkills } from "../utils/skillsStorage";
 
 const SkillsPage: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
+
+  const renderPrimaryIcon = (skill: Skill) => {
+    const name = skill.name.toLowerCase();
+    if (name.includes("react")) return <SiReact className="w-16 h-16 mb-4 text-[#61DAFB]" />;
+    if (name.includes("tailwind")) return <SiTailwindcss className="w-16 h-16 mb-4 text-[#06B6D4]" />;
+    if (name.includes("bootstrap")) return <SiBootstrap className="w-16 h-16 mb-4 text-[#7952B3]" />;
+    if (name.includes("javascript")) return <SiJavascript className="w-16 h-16 mb-4 text-[#F7DF1E]" />;
+    if (name.includes("python")) {
+      return (
+        <img
+          src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+          alt="Python"
+          className="w-16 h-16 object-contain mb-4"
+        />
+      );
+    }
+    if (name.includes("machine learning")) {
+      return <Brain className="w-16 h-16 mb-4 text-violet-600" />;
+    }
+    return <img src={skill.logo} alt={skill.name} className="w-16 h-16 object-contain mb-4" />;
+  };
 
   useEffect(() => {
     setSkills(getSkills());
@@ -30,7 +53,7 @@ const SkillsPage: React.FC = () => {
               className="bg-white/80 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 shadow-lg rounded-2xl p-6 flex flex-col items-center hover:shadow-2xl transition-shadow duration-300"
               whileHover={{ scale: 1.04 }}
             >
-              <img src={skill.logo} alt={skill.name} className="w-16 h-16 object-contain mb-4" />
+              {renderPrimaryIcon(skill)}
               <h3 className="text-lg font-semibold mb-3 text-center text-slate-800 dark:text-slate-100">{skill.name}</h3>
 
               <div className="w-full bg-slate-200 dark:bg-slate-700 h-4 rounded-full overflow-hidden">

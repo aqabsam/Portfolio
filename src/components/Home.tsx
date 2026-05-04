@@ -36,6 +36,9 @@ const Home: React.FC = () => {
               scalable, user-first products for web and mobile.
             </p>
             <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 text-lg">
+              I am pursuing <span className="font-semibold text-cyan-700 dark:text-cyan-300">B.Tech in Computer Science and Engineering</span>, and my work is centered on practical software development, product thinking, and AI-powered applications.
+            </p>
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 text-lg">
               I now work across <span className="font-semibold text-cyan-700 dark:text-cyan-300">MERN Stack, Flutter, Firebase, Python Flask backend, and Machine Learning</span>,
               along with React, Tailwind CSS, JavaScript, C, and C++.
             </p>
@@ -62,7 +65,7 @@ const Home: React.FC = () => {
             <a
               href={resumeLink}
               download
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-cyan-600/30 hover:from-cyan-600 hover:to-blue-700 transition-all duration-300"
+              className="w-full sm:w-auto text-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-cyan-600/30 hover:from-cyan-600 hover:to-blue-700 transition-all duration-300"
             >
               Download Resume
             </a>

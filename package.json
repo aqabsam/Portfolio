@@ -7,10 +7,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:github": "DEPLOY_TARGET=github-pages vite build",
+    "build:firebase": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "predeploy": "npm run build:github",
+    "deploy": "gh-pages -d dist",
+    "firebase:deploy": "npm run build:firebase && firebase deploy --only hosting",
+    "firebase:seed": "node --env-file=.env scripts/seed-firestore.mjs"
   },
   "dependencies": {
     "firebase": "^11.10.0",
